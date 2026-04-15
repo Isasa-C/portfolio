@@ -149,7 +149,7 @@ export default function Home() {
             <div className="mt-12 space-y-16">
               {/* Data Analytics */}
               <div>
-                <h3 className="text-2xl font-semibold text-white mb-8">📊 Data Analytics</h3>
+                <h3 className="text-2xl font-semibold text-white mb-8">  Data Analytics</h3>
                 <div className="grid gap-8 xl:grid-cols-1">
                   <article className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/40 transition hover:-translate-y-1 hover:bg-slate-900/95">
                     <h3 className="mt-6 text-2xl font-semibold text-white">Tennis Match Collapse Prediction</h3>
@@ -165,7 +165,7 @@ export default function Home() {
 
               {/* AI / Automation */}
               <div>
-                <h3 className="text-2xl font-semibold text-white mb-8">🤖 AI / Automation</h3>
+                <h3 className="text-2xl font-semibold text-white mb-8">  AI / Automation</h3>
                 <div className="grid gap-8 xl:grid-cols-1">
                   <article className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/40 transition hover:-translate-y-1 hover:bg-slate-900/95">
                     <h3 className="mt-6 text-2xl font-semibold text-white">TripAdvisor Sentiment Analysis (NLP)</h3>
@@ -181,7 +181,7 @@ export default function Home() {
 
               {/* Business / Strategy */}
               <div>
-                <h3 className="text-2xl font-semibold text-white mb-8">🧠 Business / Strategy</h3>
+                <h3 className="text-2xl font-semibold text-white mb-8">  Business / Strategy</h3>
                 <div className="grid gap-8 xl:grid-cols-1">
                   <article className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/40 transition hover:-translate-y-1 hover:bg-slate-900/95">
                     <h3 className="mt-6 text-2xl font-semibold text-white">Financial Forecasting Dashboard</h3>
