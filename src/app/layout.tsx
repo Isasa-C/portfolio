@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Xuejing | Big Data Portfolio",
+  title: "Xuejing CAO | Big Data Portfolio",
   description: "Portfolio for a Big Data & Business Analytics student focused on AI, NLP, sports analytics, and data-driven insights.",
 };
 
