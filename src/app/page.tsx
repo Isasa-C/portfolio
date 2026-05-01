@@ -1,249 +1,227 @@
+import Image from 'next/image';
+import InterestsSection from '@/components/InterestsSection';
 import JourneyTimeline from '@/components/JourneyTimeline';
+import SelectedProjects from '@/components/SelectedProjects';
+import BackToTopButton from '@/components/BackToTopButton';
+import ContactActions from '@/components/ContactActions';
+import ThemeToggle from '@/components/ThemeToggle';
+import PronunciationButton from '@/components/PronunciationButton';
 
 export default function Home() {
+  const emailSubject = 'Interview Invitation - [XXX Position] at [XXX Company]';
+  const emailBody = `Dear Xuejing,
+
+
+I hope this message finds you well.
+My name is [XXX Your Name], and I am reaching out on behalf of [XXX Company Name] in my capacity as [XXX Your Title / HR / Talent Acquisition].
+
+Having reviewed your portfolio, I was impressed by your profile and believe your background aligns well with what we are looking for in the [XXX Position] role.
+I would love the opportunity to connect and learn more about your experience and aspirations.
+
+I would like to invite you to a [XXX duration, e.g. 30-minute] video call interview via [Zoom / Microsoft Teams].
+Please find below a few time slots for your consideration:
+
+- [XXX Day, Date - Time, Timezone]
+- [XXX Day, Date - Time, Timezone]
+- [XXX Day, Date - Time, Timezone]
+
+Please let me know which slot works best for you, or feel free to suggest an alternative time if none of the above are convenient.
+
+Once confirmed, I will send over a calendar invitation with the meeting link and any further details.
+
+Should you have any questions in the meantime, please do not hesitate to reach out.
+
+I look forward to speaking with you.
+
+
+
+
+
+`;
+  const contactMailto = `mailto:xuejingcao@outlook.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+  const phoneDisplay = '+33 7 00 00 00 45';
+  const phoneCopyValue = '+33700000045';
+  const linkedInUrl = 'https://www.linkedin.com/in/xuejingisacao/';
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <header className="sticky top-0 z-30 border-b border-slate-800/70 bg-slate-950/95 backdrop-blur">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+      <header className="sticky top-0 z-30 border-b border-[color:var(--border)] bg-[var(--surface-strong)] backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <a href="#top" className="text-lg font-semibold tracking-tight text-white">
-            Xuejing
+          <a href="#top" className="text-lg font-semi bold italic text-[var(--accent-strong)]">
+            XC
           </a>
-          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
-            <a href="#about" className="transition hover:text-white">
-              About
-            </a>
-            <a href="#value" className="transition hover:text-white">
-              Value
-            </a>
-            <a href="#journey" className="transition hover:text-white">
-              Journey
-            </a>
-            <a href="#projects" className="transition hover:text-white">
-              Projects
-            </a>
-            <a href="#skills" className="transition hover:text-white">
-              Skills
-            </a>
-            <a href="#contact" className="rounded-full border border-slate-700 px-4 py-2 transition hover:border-slate-500 hover:text-white">
-              Contact
-            </a>
-          </nav>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <ThemeToggle />
+            <nav className="hidden items-center gap-8 text-sm font-medium text-[var(--muted-strong)] md:flex">
+              <a href="#journey" className="transition hover:text-[var(--headline)]">
+                Journey
+              </a>
+              <a href="#projects" className="transition hover:text-[var(--headline)]">
+                Projects
+              </a>
+              <a href="#interests" className="transition hover:text-[var(--headline)]">
+                Interests
+              </a>
+              <a
+                href="#contact"
+                className="rounded-full border border-[color:var(--border)] px-4 py-2 transition hover:border-[color:var(--accent-border)] hover:text-[var(--headline)]"
+              >
+                Contact
+              </a>
+            </nav>
+          </div>
         </div>
       </header>
 
       <main id="top" className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-cyan-500/20 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-[var(--accent-soft)] to-transparent" />
 
-        <section className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-          <div className="grid gap-16 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <div className="max-w-2xl">
-              <span className="inline-flex rounded-full bg-cyan-400/10 px-4 py-1 text-sm font-semibold text-cyan-300 ring-1 ring-cyan-300/20">
-                AI & Data Transformation Analyst
-              </span>
-              <h1 className="mt-8 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                Turning operations, data, and automation into practical business solutions.
-              </h1>
-              <p className="mt-6 text-lg leading-8 text-slate-300">
-                {/* Subheadline can be integrated or removed if not needed */}
-              </p>
-
-              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-                <a
-                  href="#projects"
-                  className="inline-flex items-center justify-center rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-400"
-                >
-                  View Projects
-                </a>
-                <a
-                  href="#contact"
-                  className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900/90 px-6 py-3 text-sm font-semibold text-white transition hover:border-slate-500 hover:bg-slate-800"
-                >
-                  Contact Me
-                </a>
-              </div>
-
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                <div className="rounded-3xl bg-slate-900/80 p-5 ring-1 ring-white/10">
-                  <p className="text-3xl font-semibold text-white">10+ Years</p>
-                  <p className="mt-2 text-sm text-slate-400">Engineering, operations, and delivery experience</p>
+        <section
+          id="contact"
+          className="relative mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8 lg:py-24"
+        >
+          <div className="grid gap-16 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+            <div className="max-w-xl">
+              <div className="mt-8">
+                <div className="mt-4">
+                  <h1
+                    className="mb-7 text-[clamp(52px,10vw,80px)] font-extrabold leading-none tracking-[-0.04em] text-[var(--headline)]"
+                    style={{ fontFamily: 'Georgia, serif' }}
+                  >
+                    <span className="flex items-end gap-2 not-italic">
+                      <span>Xuějīng</span>
+                      <PronunciationButton text="Xuějīng" pronunciation="Shweh-jing" className="mb-1" />
+                    </span>
+                    <span className="-mt-1 block italic text-[var(--accent-strong)]">CAO</span>
+                  </h1>
                 </div>
-                <div className="rounded-3xl bg-slate-900/80 p-5 ring-1 ring-white/10">
-                  <p className="text-3xl font-semibold text-white">Focus</p>
-                  <p className="mt-2 text-sm text-slate-400">Data, automation, and business transformation</p>
-                </div>
-                <div className="rounded-3xl bg-slate-900/80 p-5 ring-1 ring-white/10">
-                  <p className="text-3xl font-semibold text-white">Approach</p>
-                  <p className="mt-2 text-sm text-slate-400">Business-first, execution-driven</p>
+                <div className="relative mt-6 max-w-[22rem]">
+                  <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-r from-[var(--accent-soft)] to-transparent blur-lg" />
+                  <Image
+                    src="/profilepic.png"
+                    alt="Xuejing Cao - AI & Data Transformation Analyst"
+                    width={384}
+                    height={512}
+                    priority
+                    className="relative h-80 w-60 rounded-[2rem] object-cover object-top ring-1 ring-[var(--ring)] shadow-2xl shadow-[var(--shadow-color)] sm:h-[22rem] sm:w-72"
+                  />
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-center lg:justify-end">
-              <div className="relative">
-                <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg"></div>
-                <img
-                  src="/profilepic.png"
-                  alt="Xuejing Cao - AI & Data Transformation Analyst"
-                  className="relative h-80 w-80 rounded-[2rem] object-cover ring-1 ring-white/10 shadow-2xl"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="about" className="border-t border-slate-800/70 bg-slate-950/90 px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl">
-            <div className="text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300/80">
-                About
+            <div className="max-w-3xl pt-34 lg:pt-38">
+              <p className="text-[21px] font-semibold leading-tight tracking-[-0.04em] text-[var(--muted-strong)]">
+                Hello ! 
               </p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                About
-              </h2>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300 mx-auto">
-                Former Senior Project Engineer with 10+ years in operations and project delivery, now focused on analytics, automation, and AI-enabled transformation. I combine business understanding with data tools to improve decision-making, streamline processes, and deliver practical, scalable solutions across teams.
+              <p className="mt-6 max-w-[720px] text-base leading-[1.8] text-[var(--muted-strong)]">
+                I&apos;m Xuejing (Isa). For{' '}
+                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
+                  10 years
+                </span>
+                , I have turned ambiguous, high-stakes problems into structured solutions across engineering, supply
+                chain, and now data &amp; AI.
+              </p>
+              <p className="mt-3 max-w-[720px] text-base leading-[1.8] text-[var(--muted-strong)]">
+                I spent 8 years as an engineer at Husky Technologies, delivering complex custom systems with{' '}
+                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
+                  21% faster timelines
+                </span>{' '}
+                and a{' '}
+                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
+                  0.01% return rate
+                </span>
+                .
+              </p>
+              <p className="mt-3 max-w-[720px] text-base leading-[1.8] text-[var(--muted-strong)]">
+                I now apply the same logic to data and AI. I hold an MSc in Big Data &amp; Business Analytics from
+                ESCP Business School{' '}
+                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
+                  GPA 3.8
+                </span>
+                .
+              </p>
+              <p className="mt-3 max-w-[720px] text-base leading-[1.8] text-[var(--muted-strong)]">
+                At Danone, I delivered Power BI governance dashboards, led Copilot AI enablement, and restructured
+                SharePoint across{' '}
+                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
+                  200,000+ files
+                </span>
+                .
+              </p>
+              <p
+                className="mt-5 text-[20px] italic text-[var(--accent-strong)]"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Different domains. Same operating system.
+              </p>
+
+              <ContactActions
+                contactMailto={contactMailto}
+                phoneDisplay={phoneDisplay}
+                phoneCopyValue={phoneCopyValue}
+                linkedInUrl={linkedInUrl}
+              />
+
+              <p className="mt-4 text-sm text-[var(--muted)]">
+                Paris-based · Available immediately · Talent Passport visa holder
               </p>
             </div>
           </div>
-        </section>
 
-        <section id="value" className="border-t border-slate-800/70 bg-slate-950/90 px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300/80">How I Create Value</p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                How I Create Value
-              </h2>
-            </div>
-            <div className="mt-12 grid gap-8 md:grid-cols-3">
-              <div className="rounded-3xl bg-slate-900/80 p-8 ring-1 ring-white/10 text-center">
-                <h3 className="text-xl font-semibold text-white">Data Analytics</h3>
-                <p className="mt-4 text-slate-300">Turn data into clear, actionable insight.</p>
-              </div>
-              <div className="rounded-3xl bg-slate-900/80 p-8 ring-1 ring-white/10 text-center">
-                <h3 className="text-xl font-semibold text-white">AI / Automation</h3>
-                <p className="mt-4 text-slate-300">Simplify workflows with practical automation.</p>
-              </div>
-              <div className="rounded-3xl bg-slate-900/80 p-8 ring-1 ring-white/10 text-center">
-                <h3 className="text-xl font-semibold text-white">Business Transformation</h3>
-                <p className="mt-4 text-slate-300">Align strategy, operations, and execution.</p>
-              </div>
-            </div>
-          </div>
         </section>
 
         <JourneyTimeline />
 
-        <section id="projects" className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl">
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300/80">Selected Projects</p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Selected Projects
-              </h2>
-              <p className="mt-4 text-slate-400">
-                Data, automation, and business-focused case studies.
-              </p>
-            </div>
+        <SelectedProjects />
+        <InterestsSection />
 
-            <div className="mt-12 space-y-16">
-              {/* Data Analytics */}
-              <div>
-                <h3 className="text-2xl font-semibold text-white mb-8">  Data Analytics</h3>
-                <div className="grid gap-8 xl:grid-cols-1">
-                  <article className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/40 transition hover:-translate-y-1 hover:bg-slate-900/95">
-                    <h3 className="mt-6 text-2xl font-semibold text-white">Tennis Match Collapse Prediction</h3>
-                    <div className="mt-6 space-y-3 text-sm">
-                      <div><strong className="text-white">Problem:</strong> Predict performance drops during matches</div>
-                      <div><strong className="text-white">Solution:</strong> Built ML model using historical match data</div>
-                      <div><strong className="text-white">Tools:</strong> Python, Machine Learning</div>
-                      <div><strong className="text-white">Impact:</strong> Improved performance insights for coaching and planning</div>
-                    </div>
-                  </article>
-                </div>
-              </div>
-
-              {/* AI / Automation */}
-              <div>
-                <h3 className="text-2xl font-semibold text-white mb-8">  AI / Automation</h3>
-                <div className="grid gap-8 xl:grid-cols-1">
-                  <article className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/40 transition hover:-translate-y-1 hover:bg-slate-900/95">
-                    <h3 className="mt-6 text-2xl font-semibold text-white">TripAdvisor Sentiment Analysis (NLP)</h3>
-                    <div className="mt-6 space-y-3 text-sm">
-                      <div><strong className="text-white">Problem:</strong> Large volume of unstructured customer reviews</div>
-                      <div><strong className="text-white">Solution:</strong> NLP pipeline to extract sentiment and key themes</div>
-                      <div><strong className="text-white">Tools:</strong> Python, NLP</div>
-                      <div><strong className="text-white">Impact:</strong> Enabled targeted service improvements</div>
-                    </div>
-                  </article>
-                </div>
-              </div>
-
-              {/* Business / Strategy */}
-              <div>
-                <h3 className="text-2xl font-semibold text-white mb-8">  Business / Strategy</h3>
-                <div className="grid gap-8 xl:grid-cols-1">
-                  <article className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-8 shadow-xl shadow-slate-950/40 transition hover:-translate-y-1 hover:bg-slate-900/95">
-                    <h3 className="mt-6 text-2xl font-semibold text-white">Financial Forecasting Dashboard</h3>
-                    <div className="mt-6 space-y-3 text-sm">
-                      <div><strong className="text-white">Problem:</strong> Limited visibility for financial planning</div>
-                      <div><strong className="text-white">Solution:</strong> Interactive dashboard with forecasting features</div>
-                      <div><strong className="text-white">Tools:</strong> Power BI, SQL</div>
-                      <div><strong className="text-white">Impact:</strong> Improved decision-making and planning speed</div>
-                    </div>
-                  </article>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="skills" className="border-t border-slate-800/70 bg-slate-950/90 px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-6xl">
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300/80">Tools & Technologies</p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Tools & Technologies
-              </h2>
-            </div>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-              {[
-                "Python",
-                "SQL",
-                "Machine Learning",
-                "NLP",
-                "Power BI",
-              ].map((skill) => (
-                <div key={skill} className="rounded-3xl bg-slate-900/80 p-6 text-center ring-1 ring-white/10">
-                  <p className="text-lg font-semibold text-white">{skill}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="contact" className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/10 bg-slate-900/90 p-10 shadow-2xl shadow-slate-950/40">
-            <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300/80">Let's Connect</p>
-                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                  Ready to drive your next transformation project.
-                </h2>
-                <p className="mt-6 text-slate-300 leading-7">
-                  I'm open to consulting, data analytics, and digital transformation roles where I can leverage my expertise in AI, operations, and business strategy to deliver measurable impact. Let's discuss how we can work together.
-                </p>
-              </div>
-              <div className="rounded-3xl bg-slate-950 p-8 text-center">
-                <p className="text-sm uppercase tracking-[0.24em] text-slate-500">Email</p>
-                <a href="mailto:xuejingcao@outlook.com" className="mt-4 inline-flex rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
-                  xuejingcao@outlook.com
-                </a>
-              </div>
+        <section className="px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl rounded-[2rem] border border-[color:var(--border)] bg-[var(--surface)] p-8 ring-1 ring-[var(--ring)] shadow-2xl shadow-[var(--shadow-color)] sm:p-10 lg:p-14">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--accent-strong)]">
+              What Colleagues Say
+            </p>
+            <div className="mt-6 grid gap-4 lg:grid-cols-2">
+              <figure className="rounded-2xl bg-[var(--surface-soft)] p-5">
+                <blockquote className="text-sm leading-7 text-[var(--muted-strong)] sm:text-[15px]">
+                  &ldquo;Dynamic, efficient, always thinks things through. Strong soft skills and an optimistic energy
+                  that consistently moves teams forward, even in ambiguous, high-pressure situations.&rdquo;
+                </blockquote>
+                <figcaption className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
+                  Deputy VP, Global Tax Digitalization · Danone
+                </figcaption>
+              </figure>
+              <figure className="rounded-2xl bg-[var(--surface-soft)] p-5">
+                <blockquote className="text-sm leading-7 text-[var(--muted-strong)] sm:text-[15px]">
+                  &ldquo;Brings ownership to every stage, not just her scope, but the outcome. She inherited a broken
+                  client relationship, flew to Seoul, coordinated four engineering teams across four countries in a
+                  week, and closed it. That&apos;s not project management. That&apos;s judgment.&rdquo;
+                </blockquote>
+                <figcaption className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
+                  Recognition letter · Global VP · Husky Technologies
+                </figcaption>
+              </figure>
             </div>
           </div>
         </section>
       </main>
+      <footer className="px-4 pb-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl border-t border-[color:var(--border)] pt-6 text-center text-sm text-[var(--muted)]">
+          <a href={contactMailto} className="transition hover:text-[var(--headline)]">
+            xuejingcao@outlook.com
+          </a>{' '}
+          ·{' '}
+          <a
+            href="https://www.linkedin.com/in/xuejingisacao/"
+            target="_blank"
+            rel="noreferrer"
+            className="transition hover:text-[var(--headline)]"
+          >
+            LinkedIn
+          </a>{' '}
+          · Paris-based · Available immediately
+        </div>
+      </footer>
+      <BackToTopButton />
     </div>
   );
 }
