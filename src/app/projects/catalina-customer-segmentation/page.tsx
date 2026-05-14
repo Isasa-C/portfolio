@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import { Fraunces } from 'next/font/google';
 import Link from 'next/link';
 import styles from './page.module.css';
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  variable: '--font-fraunces',
-});
 
 const tools = [
   { name: 'Python', role: 'Pipeline core', glyph: 'Py', tone: styles.python },
@@ -26,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function CatalinaCustomerSegmentationPage() {
   return (
-    <main className={`${styles.casePage} ${fraunces.variable}`}>
+    <main className={styles.casePage}>
       <nav className={styles.topNav} aria-label="Case study navigation">
         <Link href="/#projects" className={styles.navBack}>
           ← All Projects
@@ -34,7 +28,7 @@ export default function CatalinaCustomerSegmentationPage() {
         <div className={styles.navLinks}>
           <Link href="/#journey">Journey</Link>
           <Link href="/#projects">Projects</Link>
-          <Link href="/#interests">Interests</Link>
+          <Link href="/#operating-system">System</Link>
           <Link href="/#contact">Contact</Link>
         </div>
       </nav>
@@ -265,15 +259,9 @@ export default function CatalinaCustomerSegmentationPage() {
       </footer>
 
       <div className={styles.floatingBar} aria-label="Case study actions">
-        <div className={styles.floatingMeta}>Case 3 of 6</div>
+        <div className={styles.floatingMeta}>Working product case</div>
         <Link href="/#projects" className={styles.navButton}>
-          ← Previous
-        </Link>
-        <Link href="/#projects" className={styles.navButton}>
-          Save
-        </Link>
-        <Link href="/#projects" className={styles.navButton}>
-          Next →
+          All Projects
         </Link>
         <Link href="/#contact" className={styles.ctaButton}>
           Contact Me

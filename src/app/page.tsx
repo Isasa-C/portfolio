@@ -1,227 +1,297 @@
 import Image from 'next/image';
-import InterestsSection from '@/components/InterestsSection';
 import JourneyTimeline from '@/components/JourneyTimeline';
 import SelectedProjects from '@/components/SelectedProjects';
-import BackToTopButton from '@/components/BackToTopButton';
-import ContactActions from '@/components/ContactActions';
 import ThemeToggle from '@/components/ThemeToggle';
-import PronunciationButton from '@/components/PronunciationButton';
+import ContactMessageForm from '@/components/ContactMessageForm';
+import AskAIStoryCard from '@/components/AskAIStoryCard';
+
+type FloatingCard = {
+  label: string;
+  value: string;
+};
+
+type BuilderLabProject = {
+  title: string;
+  url: string;
+  imageSrc: string;
+  imageAlt: string;
+  imageClass: 'builder-image-coffee' | 'builder-image-afterme';
+  imageVersion: string;
+  isLcp: boolean;
+  summary: string;
+  tags: string[];
+};
+
+type NavItem = {
+  label: string;
+  href: string;
+};
+
+type SectionIntroProps = {
+  eyebrow: string;
+  title: string;
+  body?: string;
+  titleClassName?: string;
+};
+
+const builderLabProjects: BuilderLabProject[] = [
+  {
+    title: 'Coffee Today',
+    url: 'https://coffeebeans.vercel.app/',
+    imageSrc: '/coffeebeans.png',
+    imageAlt: 'Coffee Daily app homepage showing coffee cards and navigation',
+    imageClass: 'builder-image-coffee',
+    imageVersion: '20260513-1',
+    isLcp: true,
+    summary: 'Caffeine habit tracker.',
+    tags: ['React'],
+  },
+  {
+    title: 'AfterMe',
+    url: 'https://afterme-eight.vercel.app/',
+    imageSrc: '/afterme.png',
+    imageAlt: 'AfterMe app preview showing swim essentials checklist',
+    imageClass: 'builder-image-afterme',
+    imageVersion: '20260512-1',
+    isLcp: true,
+    summary: 'Activity checklist prototype.',
+    tags: ['React'],
+  },
+];
+
+const navItems: NavItem[] = [
+  { label: 'System', href: '#operating-system' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Lab', href: '#builder-lab' },
+  { label: 'Journey', href: '#journey' },
+  { label: 'Contact', href: '#contact' },
+];
+
+const floatingProofCards: FloatingCard[] = [
+  { label: 'Review Cycle', value: '95%+ faster' },
+  { label: 'Governance', value: '238K files' },
+  { label: 'AI Workflow', value: 'Copilot workflows' },
+  { label: 'Build Style', value: 'AI prototypes' },
+];
+
+const operatingSystemSteps = [
+  {
+    number: '01',
+    title: 'Frame',
+    body: 'Turn ambiguity into a product-shaped problem.',
+  },
+  {
+    number: '02',
+    title: 'Build',
+    body: 'Prototype the smallest useful workflow.',
+  },
+  {
+    number: '03',
+    title: 'Ship',
+    body: 'Package proof into a repeatable system.',
+  },
+];
+
+function SectionIntro({ eyebrow, title, body, titleClassName }: SectionIntroProps) {
+  return (
+    <div className="section-intro">
+      <p className="section-kicker">{eyebrow}</p>
+      <h2 className={`section-title mt-3 ${titleClassName ?? ''}`}>{title}</h2>
+      {body ? <p className="section-subtitle mt-4">{body}</p> : null}
+    </div>
+  );
+}
+
+function BuilderProjectCard({ project }: { project: BuilderLabProject }) {
+  return (
+    <article className="builder-project-card">
+      <a href={project.url} target="_blank" rel="noreferrer" className="builder-link-title">
+        {project.title}
+      </a>
+      <p className="builder-info-body">{project.summary}</p>
+      <div className="builder-info-tags">
+        {project.tags.map((tag) => (
+          <span key={`${project.title}-${tag}`} className="builder-info-pill">{tag}</span>
+        ))}
+      </div>
+      <Image
+        src={`${project.imageSrc}?v=${project.imageVersion}`}
+        alt={project.imageAlt}
+        width={432}
+        height={847}
+        className={`builder-image ${project.imageClass}`}
+        sizes="(max-width: 767px) 90vw, (max-width: 1200px) 45vw, 520px"
+        loading={project.isLcp ? 'eager' : 'lazy'}
+        priority={project.isLcp}
+        unoptimized
+      />
+    </article>
+  );
+}
 
 export default function Home() {
-  const emailSubject = 'Interview Invitation - [XXX Position] at [XXX Company]';
-  const emailBody = `Dear Xuejing,
-
-
-I hope this message finds you well.
-My name is [XXX Your Name], and I am reaching out on behalf of [XXX Company Name] in my capacity as [XXX Your Title / HR / Talent Acquisition].
-
-Having reviewed your portfolio, I was impressed by your profile and believe your background aligns well with what we are looking for in the [XXX Position] role.
-I would love the opportunity to connect and learn more about your experience and aspirations.
-
-I would like to invite you to a [XXX duration, e.g. 30-minute] video call interview via [Zoom / Microsoft Teams].
-Please find below a few time slots for your consideration:
-
-- [XXX Day, Date - Time, Timezone]
-- [XXX Day, Date - Time, Timezone]
-- [XXX Day, Date - Time, Timezone]
-
-Please let me know which slot works best for you, or feel free to suggest an alternative time if none of the above are convenient.
-
-Once confirmed, I will send over a calendar invitation with the meeting link and any further details.
-
-Should you have any questions in the meantime, please do not hesitate to reach out.
-
-I look forward to speaking with you.
-
-
-
-
-
-`;
-  const contactMailto = `mailto:xuejingcao@outlook.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-  const phoneDisplay = '+33 7 00 00 00 45';
-  const phoneCopyValue = '+33700000045';
+  const email = 'xuejingcao@outlook.com';
   const linkedInUrl = 'https://www.linkedin.com/in/xuejingisacao/';
+  const contactMailto = `mailto:${email}`;
+  const cvUrl: string | null = null;
 
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <header className="sticky top-0 z-30 border-b border-[color:var(--border)] bg-[var(--surface-strong)] backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <a href="#top" className="text-lg font-semi bold italic text-[var(--accent-strong)]">
+    <div className="min-h-screen">
+      <header className="sticky top-0 z-50 border-b border-[color:var(--border)] bg-[var(--nav-surface)] backdrop-blur-xl">
+        <div className="content-rail flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
+          <a href="#home" className="brand-badge rounded-full px-3 py-1.5 shadow-sm">
             XC
           </a>
-          <div className="flex items-center gap-3 sm:gap-4">
-            <ThemeToggle />
-            <nav className="hidden items-center gap-8 text-sm font-medium text-[var(--muted-strong)] md:flex">
-              <a href="#journey" className="transition hover:text-[var(--headline)]">
-                Journey
-              </a>
-              <a href="#projects" className="transition hover:text-[var(--headline)]">
-                Projects
-              </a>
-              <a href="#interests" className="transition hover:text-[var(--headline)]">
-                Interests
-              </a>
+          <nav className="hidden items-center gap-2 md:flex">
+            {navItems.map((item) => (
               <a
-                href="#contact"
-                className="rounded-full border border-[color:var(--border)] px-4 py-2 transition hover:border-[color:var(--accent-border)] hover:text-[var(--headline)]"
+                key={item.href}
+                href={item.href}
+                className="nav-link"
               >
-                Contact
+                {item.label}
               </a>
-            </nav>
+            ))}
+          </nav>
+          <div className="flex items-center gap-2">
+            <div className="scale-90"><ThemeToggle /></div>
           </div>
         </div>
       </header>
 
-      <main id="top" className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-[var(--accent-soft)] to-transparent" />
+      <main>
+        <section id="home" className="hero-sky-section px-4 pb-12 pt-8 sm:px-6 sm:pt-8 lg:pb-14">
+          <div className="hero-panel content-rail">
+            <div className="hero-cloud hero-cloud-main" aria-hidden="true" />
+            <div className="hero-cloud hero-cloud-left" aria-hidden="true" />
+            <div className="hero-cloud hero-cloud-right" aria-hidden="true" />
 
-        <section
-          id="contact"
-          className="relative mx-auto max-w-7xl scroll-mt-24 px-4 py-20 sm:px-6 lg:px-8 lg:py-24"
-        >
-          <div className="grid gap-16 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-            <div className="max-w-xl">
-              <div className="mt-8">
-                <div className="mt-4">
-                  <h1
-                    className="mb-7 text-[clamp(52px,10vw,80px)] font-extrabold leading-none tracking-[-0.04em] text-[var(--headline)]"
-                    style={{ fontFamily: 'Georgia, serif' }}
-                  >
-                    <span className="flex items-end gap-2 not-italic">
-                      <span>Xuějīng</span>
-                      <PronunciationButton text="Xuějīng" pronunciation="Shweh-jing" className="mb-1" />
-                    </span>
-                    <span className="-mt-1 block italic text-[var(--accent-strong)]">CAO</span>
-                  </h1>
-                </div>
-                <div className="relative mt-6 max-w-[22rem]">
-                  <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-r from-[var(--accent-soft)] to-transparent blur-lg" />
-                  <Image
-                    src="/profilepic.png"
-                    alt="Xuejing Cao - AI & Data Transformation Analyst"
-                    width={384}
-                    height={512}
-                    priority
-                    className="relative h-80 w-60 rounded-[2rem] object-cover object-top ring-1 ring-[var(--ring)] shadow-2xl shadow-[var(--shadow-color)] sm:h-[22rem] sm:w-72"
-                  />
+            <div className="relative z-20 mx-auto flex max-w-[760px] flex-col items-center px-0 pt-6 text-center lg:pt-8">
+              <h1 className="hero-title mt-5 max-w-[760px] text-center">
+                Hello!
+              </h1>
+
+              <p className="hero-lede mt-4 text-center">
+                AI workflows, dashboards, and product prototypes.
+              </p>
+            </div>
+
+            <div className="hero-visual-wrap">
+              <article className="hero-profile-card">
+                <Image
+                  src="/profilepic.png"
+                  alt="Xuejing Cao"
+                  width={72}
+                  height={72}
+                  className="h-[72px] w-[72px] rounded-full object-cover object-top"
+                  priority
+                />
+                <p className="hero-profile-name mt-4">Xuejing Cao</p>
+                <p className="hero-profile-role mt-1">AI Product Builder</p>
+                <p className="hero-profile-meta mt-3">Paris</p>
+              </article>
+
+              {floatingProofCards.map((item, index) => (
+                <article key={item.label} className={`hero-float-card hero-float-${index + 1}`}>
+                  <span className="hero-float-dot" aria-hidden="true" />
+                  <p className="hero-float-label">{item.label}</p>
+                  <p className="hero-float-value mt-1">{item.value}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="relative z-20 mt-8">
+              <AskAIStoryCard />
+            </div>
+          </div>
+        </section>
+
+        <div className="post-hero-wrap">
+          <section id="operating-system" className="operating-section scroll-mt-24 px-4 py-10 sm:px-6 lg:py-12">
+            <div className="content-rail grid gap-8 lg:grid-cols-[0.9fr_1.3fr] lg:items-start">
+              <SectionIntro eyebrow="SYSTEM" title="Idea to product." />
+
+              <div className="operating-list">
+                {operatingSystemSteps.map((step) => (
+                  <article key={step.number} className="operating-item">
+                    <span className="operating-number">{step.number}</span>
+                    <div>
+                      <h3 className="operating-title">{step.title}</h3>
+                      <p className="operating-body">{step.body}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <SelectedProjects />
+
+          <section id="builder-lab" className="builder-lab-section scroll-mt-24 px-4 py-10 sm:px-6 lg:py-12">
+            <div className="content-rail">
+              <SectionIntro eyebrow="LAB" title="Working prototypes." />
+
+              <div className="builder-lab-grid mt-8">
+                {builderLabProjects.map((project) => (
+                  <BuilderProjectCard key={project.title} project={project} />
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <JourneyTimeline />
+
+          <section id="contact" className="section-post contact-section scroll-mt-24 px-4 pb-8 pt-10 sm:px-6 lg:pb-8 lg:pt-12">
+            <div className="section-divider content-rail">
+              <div className="contact-shell rounded-[24px] p-5 sm:p-7 lg:p-8">
+                <div className="grid gap-5">
+                  <div className="contact-heading-row">
+                    <SectionIntro
+                      eyebrow="CONTACT"
+                      title="Let's connect."
+                      titleClassName="contact-title-blue"
+                    />
+                    <div className="contact-actions" aria-label="Contact links">
+                      <a className="contact-icon" href={contactMailto} aria-label="Email Xuejing">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-none stroke-current stroke-2">
+                          <path d="M4 7h16v10H4z" />
+                          <path d="m4 8 8 6 8-6" />
+                        </svg>
+                      </a>
+                      <a
+                        className="contact-icon"
+                        href={linkedInUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="Open LinkedIn profile"
+                      >
+                        <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-current">
+                          <path d="M6.94 8.5A1.56 1.56 0 1 1 6.93 5.4a1.56 1.56 0 0 1 0 3.1ZM5.56 9.75h2.75V18H5.56V9.75Zm4.53 0h2.63v1.13h.04c.37-.7 1.26-1.44 2.6-1.44 2.78 0 3.29 1.83 3.29 4.22V18h-2.75v-3.84c0-.92-.02-2.1-1.28-2.1-1.28 0-1.47 1-1.47 2.03V18H10.1V9.75Z" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="contact-form-card">
+                    <ContactMessageForm contactEmail={email} cvUrl={cvUrl} />
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div className="max-w-3xl pt-34 lg:pt-38">
-              <p className="text-[21px] font-semibold leading-tight tracking-[-0.04em] text-[var(--muted-strong)]">
-                Hello ! 
-              </p>
-              <p className="mt-6 max-w-[720px] text-base leading-[1.8] text-[var(--muted-strong)]">
-                I&apos;m Xuejing (Isa). For{' '}
-                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
-                  10 years
-                </span>
-                , I have turned ambiguous, high-stakes problems into structured solutions across engineering, supply
-                chain, and now data &amp; AI.
-              </p>
-              <p className="mt-3 max-w-[720px] text-base leading-[1.8] text-[var(--muted-strong)]">
-                I spent 8 years as an engineer at Husky Technologies, delivering complex custom systems with{' '}
-                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
-                  21% faster timelines
-                </span>{' '}
-                and a{' '}
-                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
-                  0.01% return rate
-                </span>
-                .
-              </p>
-              <p className="mt-3 max-w-[720px] text-base leading-[1.8] text-[var(--muted-strong)]">
-                I now apply the same logic to data and AI. I hold an MSc in Big Data &amp; Business Analytics from
-                ESCP Business School{' '}
-                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
-                  GPA 3.8
-                </span>
-                .
-              </p>
-              <p className="mt-3 max-w-[720px] text-base leading-[1.8] text-[var(--muted-strong)]">
-                At Danone, I delivered Power BI governance dashboards, led Copilot AI enablement, and restructured
-                SharePoint across{' '}
-                <span className="inline-flex rounded-full bg-[rgba(191,231,255,0.85)] px-[10px] py-0 leading-none text-[rgba(15,23,42,0.92)] dark:text-[rgba(15,23,42,0.92)]">
-                  200,000+ files
-                </span>
-                .
-              </p>
-              <p
-                className="mt-5 text-[20px] italic text-[var(--accent-strong)]"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
-                Different domains. Same operating system.
-              </p>
-
-              <ContactActions
-                contactMailto={contactMailto}
-                phoneDisplay={phoneDisplay}
-                phoneCopyValue={phoneCopyValue}
-                linkedInUrl={linkedInUrl}
-              />
-
-              <p className="mt-4 text-sm text-[var(--muted)]">
-                Paris-based · Available immediately · Talent Passport visa holder
-              </p>
-            </div>
-          </div>
-
-        </section>
-
-        <JourneyTimeline />
-
-        <SelectedProjects />
-        <InterestsSection />
-
-        <section className="px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl rounded-[2rem] border border-[color:var(--border)] bg-[var(--surface)] p-8 ring-1 ring-[var(--ring)] shadow-2xl shadow-[var(--shadow-color)] sm:p-10 lg:p-14">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--accent-strong)]">
-              What Colleagues Say
-            </p>
-            <div className="mt-6 grid gap-4 lg:grid-cols-2">
-              <figure className="rounded-2xl bg-[var(--surface-soft)] p-5">
-                <blockquote className="text-sm leading-7 text-[var(--muted-strong)] sm:text-[15px]">
-                  &ldquo;Dynamic, efficient, always thinks things through. Strong soft skills and an optimistic energy
-                  that consistently moves teams forward, even in ambiguous, high-pressure situations.&rdquo;
-                </blockquote>
-                <figcaption className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-                  Deputy VP, Global Tax Digitalization · Danone
-                </figcaption>
-              </figure>
-              <figure className="rounded-2xl bg-[var(--surface-soft)] p-5">
-                <blockquote className="text-sm leading-7 text-[var(--muted-strong)] sm:text-[15px]">
-                  &ldquo;Brings ownership to every stage, not just her scope, but the outcome. She inherited a broken
-                  client relationship, flew to Seoul, coordinated four engineering teams across four countries in a
-                  week, and closed it. That&apos;s not project management. That&apos;s judgment.&rdquo;
-                </blockquote>
-                <figcaption className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--muted)]">
-                  Recognition letter · Global VP · Husky Technologies
-                </figcaption>
-              </figure>
-            </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
-      <footer className="px-4 pb-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl border-t border-[color:var(--border)] pt-6 text-center text-sm text-[var(--muted)]">
-          <a href={contactMailto} className="transition hover:text-[var(--headline)]">
-            xuejingcao@outlook.com
-          </a>{' '}
-          ·{' '}
-          <a
-            href="https://www.linkedin.com/in/xuejingisacao/"
-            target="_blank"
-            rel="noreferrer"
-            className="transition hover:text-[var(--headline)]"
-          >
-            LinkedIn
-          </a>{' '}
-          · Paris-based · Available immediately
+
+      <footer className="editorial-footer px-6 py-8 sm:px-10 lg:px-16">
+        <div className="editorial-footer-inner content-rail flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="editorial-muted">© 2026 Xuejing Cao</p>
+          <nav aria-label="Footer links" className="minimal-footer-links">
+            <a href={contactMailto}>Email</a>
+            <a href={linkedInUrl} target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href="#projects">Work</a>
+          </nav>
         </div>
       </footer>
-      <BackToTopButton />
     </div>
   );
 }

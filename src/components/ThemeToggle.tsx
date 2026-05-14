@@ -75,7 +75,7 @@ function MoonIcon({ visible }: { visible: boolean }) {
 }
 
 export default function ThemeToggle({ onChange }: ThemeToggleProps) {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => getPreferredTheme());
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => getPreferredTheme() as 'light' | 'dark');
   const isDark = theme === 'dark';
   const handleX = isDark ? DARK_HANDLE_X : LIGHT_HANDLE_X;
   const glowX = handleX + HANDLE_SIZE / 2;
@@ -124,34 +124,6 @@ export default function ThemeToggle({ onChange }: ThemeToggleProps) {
                 : 'radial-gradient(circle, rgba(191, 231, 255, 0.95) 0%, rgba(115, 206, 255, 0.45) 48%, rgba(115, 206, 255, 0) 100%)',
             }}
           />
-        </span>
-
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-[44px] text-[14px] font-medium text-white transition-all duration-300 ease-in-out"
-          style={{
-            opacity: isDark ? 0 : 1,
-            transform: `translateX(${isDark ? '6px' : '0px'}) scale(${isDark ? 0.96 : 1})`,
-            textShadow: '0 2px 8px rgba(0, 0, 0, 0.18)',
-            fontSize: '12px',
-            paddingLeft: '43px',
-          }}
-        >
-          Light
-        </span>
-
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-[14px] font-medium text-white transition-all duration-300 ease-in-out"
-          style={{
-            opacity: isDark ? 1 : 0,
-            transform: `translateX(${isDark ? '0px' : '-6px'}) scale(${isDark ? 1 : 0.96})`,
-            textShadow: '0 2px 8px rgba(0, 0, 0, 0.22)',
-            fontSize: '12px',
-            paddingLeft: '14px',
-          }}
-        >
-          Dark
         </span>
 
         <span

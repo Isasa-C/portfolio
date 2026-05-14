@@ -76,7 +76,7 @@ export default function BackToTopButton() {
 
       <span
         aria-hidden="true"
-        className="relative flex items-center justify-center text-center font-semibold leading-none tracking-[-0.02em] transition-opacity duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:opacity-85"
+        className="relative flex items-center justify-center text-center font-semibold leading-none tracking-normal transition-opacity duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:opacity-85"
         style={{ color: 'var(--back-to-top-icon)', fontSize: '18px' }}
       >
         不

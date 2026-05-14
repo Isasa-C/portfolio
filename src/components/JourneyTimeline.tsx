@@ -1,54 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { Fragment, type KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { Fragment } from 'react';
 import { journeyData } from '@/data/journey';
 
 export default function JourneyTimeline() {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const [activeLogoItemId, setActiveLogoItemId] = useState<string | null>(null);
-  const [visibleItemIds, setVisibleItemIds] = useState<Set<string>>(() => new Set());
   const educationItems = journeyData.filter((item) => item.type === 'education');
   const careerItems = journeyData.filter((item) => item.type === 'career');
-
-  useEffect(() => {
-    const section = sectionRef.current;
-
-    if (!section) {
-      return;
-    }
-
-    const cards = Array.from(section.querySelectorAll<HTMLElement>('.journey-card'));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            window.setTimeout(() => {
-              const itemId = (entry.target as HTMLElement).dataset.journeyCardId;
-
-              if (itemId) {
-                setVisibleItemIds((currentIds) => {
-                  const nextIds = new Set(currentIds);
-                  nextIds.add(itemId);
-                  return nextIds;
-                });
-              }
-            }, index * 100);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' },
-    );
-
-    cards.forEach((card) => {
-      observer.observe(card);
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
 
   const getLogo = (item: (typeof journeyData)[number]) => {
     if (item.subtitle === 'Donghua University') {
@@ -74,36 +32,7 @@ export default function JourneyTimeline() {
     return null;
   };
 
-  const cardClassName = (item: (typeof journeyData)[number], mobile = false) =>
-    `${item.featured ? 'border-[color:var(--ring)] bg-[var(--surface-elevated)] shadow-lg' : 'border-[color:var(--ring)] bg-[var(--surface)]'} ${
-      mobile ? 'flex-1' : item.type === 'education' ? 'w-88' : item.featured ? 'w-68' : 'w-56'
-    } ${
-      activeLogoItemId === item.id ? 'is-selected' : ''
-    } ${
-      visibleItemIds.has(item.id) ? 'is-visible' : ''
-    } journey-card group cursor-pointer rounded-2xl border p-4 ring-1 ring-[var(--ring)] shadow-[var(--shadow-color)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--accent-border)]`;
-
-  const logoClassName = (item: (typeof journeyData)[number]) =>
-    `logo h-5 w-auto object-contain transition-[filter] duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-      activeLogoItemId === item.id
-        ? '[filter:grayscale(0%)_opacity(1)]'
-        : '[filter:grayscale(100%)_opacity(0.75)] group-hover:[filter:grayscale(0%)_opacity(1)]'
-    }`;
-
-  const activateItem = (item: (typeof journeyData)[number]) => {
-    setActiveLogoItemId(item.id);
-  };
-
-  const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>, item: (typeof journeyData)[number]) => {
-    if (event.key !== 'Enter' && event.key !== ' ') {
-      return;
-    }
-
-    event.preventDefault();
-    activateItem(item);
-  };
-
-  const renderLogo = (item: (typeof journeyData)[number], placement: 'top' | 'bottom') => {
+  const renderLogoChip = (item: (typeof journeyData)[number]) => {
     const logo = getLogo(item);
 
     if (!logo) {
@@ -111,135 +40,71 @@ export default function JourneyTimeline() {
     }
 
     return (
-      <div
-        className={
-          placement === 'top'
-            ? 'absolute left-1/2 top-0 z-10 flex -translate-x-1/2 -translate-y-1/2 justify-center'
-            : '-mb-3 mt-6 flex justify-center'
-        }
-      >
-        <div className="flex h-10 items-center justify-center rounded-full bg-[var(--surface-elevated)] px-4 ring-1 ring-[var(--ring)]">
-          <Image
-            src={logo.src}
-            alt={logo.alt}
-            width={logo.width}
-            height={24}
-            className={logoClassName(item)}
-          />
-        </div>
-      </div>
-    );
-  };
-
-  const renderBottomEdgeLogo = (item: (typeof journeyData)[number]) => {
-    const logo = getLogo(item);
-
-    if (!logo) {
-      return null;
-    }
-
-    return (
-      <div className="absolute -bottom-5 left-1/2 z-10 -translate-x-1/2">
-        <div className="flex h-10 items-center justify-center rounded-full bg-[var(--surface-elevated)] px-4 ring-1 ring-[var(--ring)]">
-          <Image
-            src={logo.src}
-            alt={logo.alt}
-            width={logo.width}
-            height={24}
-            className={logoClassName(item)}
-          />
-        </div>
+      <div className="absolute -bottom-5 left-1/2 z-10 -translate-x-1/2 rounded-full border border-[var(--border)] bg-white px-3 py-1 dark:bg-[var(--surface)]">
+        <Image src={logo.src} alt={logo.alt} width={logo.width} height={24} className="h-5 w-auto object-contain" />
       </div>
     );
   };
 
   return (
-    <section
-      ref={sectionRef}
-      id="journey"
-      className="journey-section scroll-mt-24 border-t border-[color:var(--border)] bg-[var(--color-section-bg)] px-4 py-14 sm:px-6 lg:px-8 lg:py-18"
-    >
-      <div className="mx-auto max-w-7xl">
-        <div className="mx-auto max-w-xl text-center">
-          <p className="text-[13px] font-semibold uppercase tracking-[0.24em] text-[var(--accent-strong)]">Journey</p>
-        </div>
+    <section id="journey" className="journey-section section-post scroll-mt-24 px-4 py-10 sm:px-6 lg:py-12">
+      <div className="section-divider journey-shell mx-auto">
+        <p className="section-kicker">JOURNEY</p>
+        <h2 className="section-title mt-3">
+          Journey.
+        </h2>
 
-        <div className="mt-12 hidden lg:block">
-          <div className="relative">
+        <div className="mt-8 hidden lg:block">
+          <div className="relative w-full">
             <div className="absolute left-0 right-0 top-[calc(50%-0.75rem)] h-px bg-[var(--border)]" />
-            <p className="absolute left-[70%] top-[calc(50%-0.75rem)] flex -translate-x-1/2 flex-col items-center text-center text-[13px] font-normal italic text-[var(--accent-strong)]">
-              <span className="absolute bottom-1 whitespace-nowrap">May 2023 ·</span>
-              <span className="absolute top-1 whitespace-nowrap">China → France</span>
-            </p>
 
-            <div className="relative mb-12">
+            <div className="relative mb-10">
               <div className="mb-5 flex -translate-y-3 items-center justify-center">
-                <h3 className="text-[15px] font-semibold uppercase tracking-[0.2em] text-[var(--muted-strong)]">
-                  Education
-                </h3>
+                <h3 className="timeline-group-title">Education</h3>
               </div>
-              <div className="flex items-end justify-between gap-4">
+              <div className="flex items-end justify-between gap-3">
                 {educationItems.map((item) => (
                   <Fragment key={item.id}>
                     <div className="flex flex-col items-center">
-                      <div
-                        role="button"
-                        tabIndex={0}
-                        data-journey-card-id={item.id}
-                        onClick={() => activateItem(item)}
-                        onKeyDown={(event) => handleCardKeyDown(event, item)}
-                        className={`relative mb-4 overflow-visible pt-3 ${cardClassName(item)}`}
-                      >
-                        <div className="text-[13px] font-medium text-[var(--muted)]">{item.period}</div>
-                        <h4 className="mt-2 text-base font-semibold leading-snug text-[var(--headline)]">
-                          {item.title}
-                        </h4>
-                        <p className="mt-1.5 text-[13px] text-[var(--muted-strong)]">{item.subtitle}</p>
-                        <p className="mt-1.5 text-[13px] text-[var(--muted)]">{item.location}</p>
-                        {item.detail ? (
-                          <p className="mt-2.5 mb-3 text-[13px] font-medium leading-6 text-[var(--accent-strong)]">
-                            {item.detail}
-                          </p>
-                        ) : null}
-                        {renderBottomEdgeLogo(item)}
+                      <div className="relative mb-4 w-64 rounded-[22px] border border-[var(--border)] bg-[var(--surface)] p-3.5 shadow-[0_10px_26px_-22px_var(--shadow-color)]">
+                        <div className="timeline-period">{item.period}</div>
+                        <h4 className="timeline-title">{item.title}</h4>
+                        <p className="timeline-meta">{item.subtitle}</p>
+                        {item.detail ? <p className="timeline-detail mb-2">{item.detail}</p> : null}
+                        {renderLogoChip(item)}
                       </div>
-                      <div className="h-5 w-px bg-[var(--border)]" />
-                      <div className="h-3 w-3 rounded-full bg-[var(--accent)] ring-2 ring-[var(--background)]" />
+                      <div className="h-4 w-px bg-[var(--border)]" />
+                      <div className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
                     </div>
                   </Fragment>
                 ))}
               </div>
             </div>
 
-            <div className="relative mt-20">
-              <div className="mb-6 flex items-center justify-center">
-                <h3 className="text-[15px] font-semibold uppercase tracking-[0.2em] text-[var(--muted-strong)]">
-                  Career
-                </h3>
+            <div className="relative mt-10">
+              <div className="mb-5 flex items-center justify-center">
+                <h3 className="timeline-group-title">Career</h3>
               </div>
-              <div className="flex items-start justify-between gap-4">
-                {careerItems.map((item, index) => (
-                  <div key={item.id} className={`flex flex-col items-center self-start ${index === 1 ? '-ml-5' : ''}`}>
-                    <div className="h-3 w-3 rounded-full bg-[var(--accent)] ring-2 ring-[var(--background)]" />
-                    <div className="h-5 min-h-[20px] w-px bg-[var(--border)]" />
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      data-journey-card-id={item.id}
-                      onClick={() => activateItem(item)}
-                      onKeyDown={(event) => handleCardKeyDown(event, item)}
-                      className={`relative mt-5 overflow-visible pt-7 ${cardClassName(item)}`}
-                    >
-                      {renderLogo(item, 'top')}
-                      <div className="text-[13px] font-medium text-[var(--muted)]">{item.period}</div>
-                      <h4 className="mt-2 text-base font-semibold leading-snug text-[var(--headline)]">{item.title}</h4>
-                      <p className="mt-1.5 text-[13px] text-[var(--muted-strong)]">{item.subtitle}</p>
-                      <p className="mt-1.5 text-[13px] text-[var(--muted)]">{item.location}</p>
-                      {item.detail ? (
-                        <p className="mt-2.5 mb-3 text-[13px] font-medium leading-6 text-[var(--accent-strong)]">
-                          {item.detail}
-                        </p>
-                      ) : null}
+              <div className="flex items-start justify-between gap-3">
+                {careerItems.map((item) => (
+                  <div key={item.id} className="flex flex-col items-center self-start">
+                    <div className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
+                    <div className="h-4 min-h-[16px] w-px bg-[var(--border)]" />
+                    <div className="relative mt-4 w-56 rounded-[22px] border border-[var(--border)] bg-[var(--surface)] p-3.5 pt-7 shadow-[0_10px_26px_-22px_var(--shadow-color)]">
+                      <div className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[var(--border)] bg-white px-3 py-1 dark:bg-[var(--surface)]">
+                        {(() => {
+                          const logo = getLogo(item);
+                          if (!logo) {
+                            return null;
+                          }
+                          return <Image src={logo.src} alt={logo.alt} width={logo.width} height={24} className="h-5 w-auto object-contain" />;
+                        })()}
+                      </div>
+
+                      <div className="timeline-period">{item.period}</div>
+                      <h4 className="timeline-title">{item.title}</h4>
+                      <p className="timeline-meta">{item.subtitle}</p>
+                      {item.detail ? <p className="timeline-detail mb-2">{item.detail}</p> : null}
                     </div>
                   </div>
                 ))}
@@ -248,37 +113,22 @@ export default function JourneyTimeline() {
           </div>
         </div>
 
-        <div className="mt-12 lg:hidden">
-          <div className="space-y-7">
+        <div className="mt-8 lg:hidden">
+          <div className="space-y-6">
             <div>
-              <h3 className="mb-5 text-center text-[15px] font-semibold uppercase tracking-[0.2em] text-[var(--muted-strong)]">
-                Education
-              </h3>
-              <div className="space-y-4">
+              <h3 className="timeline-group-title mb-4 text-center">Education</h3>
+              <div className="space-y-3">
                 {educationItems.map((item, index) => (
                   <div key={item.id} className="flex items-start gap-4">
                     <div className="flex flex-col items-center">
-                      <div className="h-3 w-3 rounded-full bg-[var(--accent)] ring-2 ring-[var(--background)]" />
-                      {index < educationItems.length - 1 ? <div className="mt-2 h-14 w-px bg-[var(--border)]" /> : null}
+                      <div className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
+                      {index < educationItems.length - 1 ? <div className="mt-2 h-12 w-px bg-[var(--border)]" /> : null}
                     </div>
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      data-journey-card-id={item.id}
-                      onClick={() => activateItem(item)}
-                      onKeyDown={(event) => handleCardKeyDown(event, item)}
-                      className={`relative mb-4 overflow-visible pt-3 ${cardClassName(item, true)}`}
-                    >
-                      <div className="text-[13px] font-medium text-[var(--muted)]">{item.period}</div>
-                      <h4 className="mt-2 text-base font-semibold leading-snug text-[var(--headline)]">{item.title}</h4>
-                      <p className="mt-1.5 text-[13px] text-[var(--muted-strong)]">{item.subtitle}</p>
-                      <p className="mt-1.5 text-[13px] text-[var(--muted)]">{item.location}</p>
-                      {item.detail ? (
-                        <p className="mt-2.5 text-[13px] font-medium leading-6 text-[var(--accent-strong)]">
-                          {item.detail}
-                        </p>
-                      ) : null}
-                      {renderBottomEdgeLogo(item)}
+                    <div className="relative flex-1 rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-3.5 pt-3 shadow-[0_10px_26px_-22px_var(--shadow-color)]">
+                      <div className="timeline-period">{item.period}</div>
+                      <h4 className="timeline-title">{item.title}</h4>
+                      <p className="timeline-meta">{item.subtitle}</p>
+                      {item.detail ? <p className="timeline-detail">{item.detail}</p> : null}
                     </div>
                   </div>
                 ))}
@@ -286,34 +136,19 @@ export default function JourneyTimeline() {
             </div>
 
             <div>
-              <h3 className="mb-5 text-center text-[15px] font-semibold uppercase tracking-[0.2em] text-[var(--muted-strong)]">
-                Career
-              </h3>
-              <div className="space-y-4">
+              <h3 className="timeline-group-title mb-4 text-center">Career</h3>
+              <div className="space-y-3">
                 {careerItems.map((item, index) => (
                   <div key={item.id} className="flex items-start gap-4">
                     <div className="flex flex-col items-center">
-                      <div className="h-3 w-3 rounded-full bg-[var(--accent)] ring-2 ring-[var(--background)]" />
-                      {index < careerItems.length - 1 ? <div className="mt-2 h-14 w-px bg-[var(--border)]" /> : null}
+                      <div className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
+                      {index < careerItems.length - 1 ? <div className="mt-2 h-12 w-px bg-[var(--border)]" /> : null}
                     </div>
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      data-journey-card-id={item.id}
-                      onClick={() => activateItem(item)}
-                      onKeyDown={(event) => handleCardKeyDown(event, item)}
-                      className={`${cardClassName(item, true)} pt-5`}
-                    >
-                      {renderLogo(item, 'top')}
-                      <div className="text-[13px] font-medium text-[var(--muted)]">{item.period}</div>
-                      <h4 className="mt-2 text-base font-semibold leading-snug text-[var(--headline)]">{item.title}</h4>
-                      <p className="mt-1.5 text-[13px] text-[var(--muted-strong)]">{item.subtitle}</p>
-                      <p className="mt-1.5 text-[13px] text-[var(--muted)]">{item.location}</p>
-                      {item.detail ? (
-                        <p className="mt-2.5 text-[13px] font-medium leading-6 text-[var(--accent-strong)]">
-                          {item.detail}
-                        </p>
-                      ) : null}
+                    <div className="relative flex-1 rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-3.5 pt-5 shadow-[0_10px_26px_-22px_var(--shadow-color)]">
+                      <div className="timeline-period">{item.period}</div>
+                      <h4 className="timeline-title">{item.title}</h4>
+                      <p className="timeline-meta">{item.subtitle}</p>
+                      {item.detail ? <p className="timeline-detail">{item.detail}</p> : null}
                     </div>
                   </div>
                 ))}

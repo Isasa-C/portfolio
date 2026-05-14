@@ -45,7 +45,6 @@ export const journeyData: JourneyItem[] = [
     title: "Bachelor's in Financial Engineering",
     subtitle: 'Donghua University',
     location: 'Shanghai, China',
-    detail: 'Mathematical Modelling Competition Prize',
     featured: true,
   },
   {
@@ -55,7 +54,6 @@ export const journeyData: JourneyItem[] = [
     title: "Master's in Business Analytics & AI",
     subtitle: 'ESCP Business School',
     location: 'Paris, France & Berlin, Germany',
-    detail: 'GPA 3.8',
     featured: true,
   },
   // Career (below the line)
